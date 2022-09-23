@@ -1,0 +1,83 @@
+body {
+    margin: 0;
+    height: 100vh;
+    animation: fadeInAnimation ease 3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+canvas {
+    display: block;
+}
+
+input {
+    border: 0;
+    outline: 0;
+    height: 100%;
+    width: 100%;
+    background:transparent;
+    text-align: center;
+    color:rgb(77, 77, 77);
+    font-size: medium;
+    font-weight: bold;
+}
+
+.column {
+    float:left;
+}
+.left {
+    width: 75%;
+}
+.right {
+    width: 25%;
+    float: right;
+}
+
+.input-matrix-grid {
+    display: grid;
+    grid-template-columns: 2% 2% 2%;
+    grid-gap: 5px;
+}
+
+.input2-matrix-grid {
+    display: grid;
+    grid-template-columns: 2% 2% 2% 2%;
+    grid-gap: 5px;
+}
+
+.matrix-item {
+    background-color: rgb(226, 226, 226);
+    aspect-ratio: 1;
+    text-align: center;
+}
+
+.matrix2-item {
+    background-color: rgb(226, 226, 226);
+    aspect-ratio: 1;
+    text-align: center;
+}
+
+.input-matrix-container {
+    height: 12vh;
+    width: 100vw;
+    position: absolute;
+    right:-92.2vw;
+    top: 30vh;
+}
+
+.input2-matrix-container {
+    height: 12vh;
+    width: 100vw;
+    position: absolute;
+    right:-90vw;
+    top:50vh;
+}
+  
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+     }
+}

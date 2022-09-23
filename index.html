@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Transformer</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <script type="importmap">
+        {
+        "imports" : {
+            "three": "http://unpkg.com/three@latest/build/three.module.js"
+        }
+        }
+      </script>
+    <script type="module" src="main.js"></script>
+    <script src="input.js"></script>
+
+    <div class="column left">
+        <div id="container"></div>
+    </div>  
+    <div class="column right">
+        <div class="input-matrix-container">
+            <div style="writing-mode:vertical-rl;float:left;font-weight: bold;font-size:0.8vw;font-family:verdana">transformation</div>
+            <div class="input-matrix-grid">
+                <div class="matrix-item" oninput="registerInput(0,0)"><input type="text" class="matrix-input"></div>
+                <div class="matrix-item" oninput="registerInput(1,0)"><input type="text" class="matrix-input"></div>
+                <div class="matrix-item" oninput="registerInput(2,0)"><input type="text" class="matrix-input"></div>
+                <div class="matrix-item" oninput="registerInput(0,1)"><input type="text" class="matrix-input"></div>
+                <div class="matrix-item" oninput="registerInput(1,1)"><input type="text" class="matrix-input"></div>
+                <div class="matrix-item" oninput="registerInput(2,1)"><input type="text" class="matrix-input"></div>
+                <div class="matrix-item" oninput="registerInput(0,2)"><input type="text" class="matrix-input"></div>
+                <div class="matrix-item" oninput="registerInput(1,2)"><input type="text" class="matrix-input"></div>
+                <div class="matrix-item" oninput="registerInput(2,2)"><input type="text" class="matrix-input"></div>
+            </div>
+        </div>
+        <div class="input2-matrix-container">
+            <div style="writing-mode:vertical-rl;float:left;font-weight: bold;font-size:0.9vw;font-family:verdana">input matrix</div>
+            <div class="input2-matrix-grid">
+                <div class="matrix2-item" oninput="registerInput2(0,0)"><input type="text" class="matrix2-input"></div>
+                <div class="matrix2-item" oninput="registerInput2(1,0)"><input type="text" class="matrix2-input"></div>
+                <div class="matrix2-item" oninput="registerInput2(2,0)"><input type="text" class="matrix2-input"></div>
+                <div class="matrix2-item" oninput="registerInput2(3,0)"><input type="text" class="matrix2-input"></div>
+
+                <div class="matrix2-item" oninput="registerInput2(0,1)"><input type="text" class="matrix2-input"></div>
+                <div class="matrix2-item" oninput="registerInput2(1,1)"><input type="text" class="matrix2-input"></div>
+                <div class="matrix2-item" oninput="registerInput2(2,1)"><input type="text" class="matrix2-input"></div>
+                <div class="matrix2-item" oninput="registerInput2(3,1)"><input type="text" class="matrix2-input"></div>
+
+                <div class="matrix2-item" oninput="registerInput2(0,2)"><input type="text" class="matrix2-input"></div>
+                <div class="matrix2-item" oninput="registerInput2(1,2)"><input type="text" class="matrix2-input"></div>
+                <div class="matrix2-item" oninput="registerInput2(2,2)"><input type="text" class="matrix2-input"></div>
+                <div class="matrix2-item" oninput="registerInput2(3,2)"><input type="text" class="matrix2-input"></div>
+            </div>
+        </div>
+    </div> 
+
+</body>
+</html>
