@@ -2,10 +2,13 @@
 
 window.transformationComplete = false;
 window.inputComplete = false;
+window.inputChange = false;
+window.transChange = false;
 
 async function registerInput(x, y) {
   var value = parseFloat(document.getElementsByClassName("matrix-input")[(x)+(y*3)].value)
   if (!isNaN(value)) {
+    window.transChange = true;
     if (y == 0) {
       window.transformation[x].x = value;
     } else if (y == 1) {
@@ -55,6 +58,7 @@ async function registerInput2(x, y) {
   var value = parseFloat(document.getElementsByClassName("matrix2-input")[(x)+(y*4)].value)
   console.log(value)
   if (!isNaN(value)) {
+    window.inputChange = true;
     if (y == 0) {
       window.input[x].x = value * 5 ;
     } else if (y == 1) {
