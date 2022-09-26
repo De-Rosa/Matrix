@@ -11,9 +11,15 @@ import { Vector3 } from "three";
 
 window.transformation = [new Vector3(NaN, NaN, NaN),new Vector3(NaN, NaN, NaN),new Vector3(NaN, NaN, NaN)]
 window.input = [new Vector3(NaN, NaN, NaN),new Vector3(NaN, NaN, NaN),new Vector3(NaN, NaN, NaN),new Vector3(NaN, NaN, NaN)]
+window.customInput = []
 window.drawn = null;
 window.drawnTransformation = null;
 window.divisions = 1;
+
+window.graph = new function(){
+  this.divisions=1;
+  this.matrixSize=2;
+}
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -168,8 +174,13 @@ function createInputShape () {
       window.inputChange = false;
     }
     if (window.drawn == null) {
-      console.log("change")
-      const geometry = new ConvexGeometry(window.input)
+      var points;
+      if (window.customInput != null) {
+        points = window.customInput
+      } else {
+        points = window.input
+      }
+      const geometry = new ConvexGeometry(points)
       const material = new THREE.MeshBasicMaterial( { color: 0xaa0000 } );
       const mesh = new THREE.Mesh(geometry, material);
       window.drawn = mesh
@@ -191,10 +202,19 @@ function createTransformedShape () {
       window.transChange = false;
     }
     if (window.drawnTransformation == null) {
-      var points = [new Vector3(NaN, NaN, NaN), new Vector3(NaN, NaN, NaN), new Vector3(NaN, NaN, NaN), new Vector3(NaN, NaN, NaN)]
+      var inp;
+      if (window.customInput != null) {
+        inp = window.customInput
+      } else {
+        inp = window.input
+      }
+      var points = []
+      for (var i=0; i<inp.length; i++) {
+        points.push(new Vector3(null, null, null))
+      }
       var trans = window.transformation
-      var inp = window.input;
-      for (var column = 0; column<4; column++) { //rows of input
+      
+      for (var column = 0; column<inp.length; column++) { //rows of input
         for (var row = 0; row<3; row++) { //columns of input
           if (row == 0) {
             points[column].x = (trans[0].x * inp[column].x) + (trans[1].x * inp[column].y) + (trans[2].x * inp[column].z)
@@ -208,7 +228,7 @@ function createTransformedShape () {
         }
       }
       const geometry = new ConvexGeometry(points)
-      const material = new THREE.MeshBasicMaterial( { color: 0x0000aa } );
+      const material = new THREE.MeshBasicMaterial( { color: 0x0000aa} );
       const mesh = new THREE.Mesh(geometry, material);
       window.drawnTransformation = mesh
       scene.add(mesh);
@@ -221,12 +241,41 @@ function createTransformedShape () {
   }
 }
 
+function formatManualInput(inputList) {
+  if (inputList.length < 3) return;
+  var formattedList = [];
+  for (var i=0; i<inputList.length; i++) {
+    formattedList.push(new Vector3(inputList[i][0], inputList[i][1], inputList[i][2]));
+  }
+  window.customInput = formattedList;
+  window.manualInput = null;
+  window.inputComplete = true;
+}
+
 function animate() {
   scene.background = new THREE.Color(camera.position.X);
   requestAnimationFrame(animate);
   controls.update();
-  createTransformedShape()
-  createInputShape()
+  if (window.manualInput != null) {
+    formatManualInput(manualInput)
+  }
+  try {
+    createInputShape()
+  } catch (err) {
+    console.log("error found when making shape:", err)
+    scene.remove(window.drawn);
+    window.drawn = null;
+    window.inputComplete=false;
+  }
+
+  try {
+    createTransformedShape()
+  } catch (err) {
+    console.log("error found when making transformed shape:", err)
+    scene.remove(window.drawnTransformation);
+    window.drawnTransformation = null; 
+    window.transformationComplete=false;
+  }
   renderer.render( scene, camera );
 }
 
