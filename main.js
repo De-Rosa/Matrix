@@ -160,6 +160,13 @@ for (let i=1; i<10; i++) {
 
 function createInputShape () {
   if(window.inputComplete) {
+    if (window.inputChange) {
+      scene.remove(window.drawn);
+      scene.remove(window.drawnTransformation)
+      window.drawn = null;
+      window.drawnTransformation = null;
+      window.inputChange = false;
+    }
     if (window.drawn == null) {
       console.log("change")
       const geometry = new ConvexGeometry(window.input)
@@ -178,6 +185,11 @@ function createInputShape () {
 
 function createTransformedShape () {
   if(window.transformationComplete & window.inputComplete) {
+    if (window.transChange) {
+      scene.remove(window.drawnTransformation);
+      window.drawnTransformation = null;
+      window.transChange = false;
+    }
     if (window.drawnTransformation == null) {
       var points = [new Vector3(NaN, NaN, NaN), new Vector3(NaN, NaN, NaN), new Vector3(NaN, NaN, NaN), new Vector3(NaN, NaN, NaN)]
       var trans = window.transformation
