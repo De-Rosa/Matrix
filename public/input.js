@@ -5,6 +5,7 @@ window.inputComplete = false;
 window.inputChange = false;
 window.transChange = false;
 window.manualInput = null;
+window.inputString = null;
 
 async function registerInput(x, y) {
   var value = parseFloat(document.getElementsByClassName("matrix-input")[(x)+(y*3)].value)
@@ -107,21 +108,26 @@ async function registerInput2(x, y) {
 }
 
 function setManualInput(inputString) {  
+  window.inputString = inputString;
   window.inputChange = true;
   var originalList = inputString.split('/');
-  var completedList = [];
+  window.completedList = [];
   var tempList = [];
   for (var i=0; i<originalList.length; i++) {
     tempList = originalList[i].split('&');
     for (var j=0; j<tempList.length; j++) {
       tempList[j] = parseInt(tempList[j]) * 5;
     }
-    completedList.push(tempList)
+    window.completedList.push(tempList)
   }
   window.manualInput = completedList;
 }
 
 function createPopup() {
-  newInput = window.prompt("Please input a custom matrix. (& to seperate row values, / to seperate columns)", "0&0&0/0&0&0/0&0&0/0&0&0/0&0&0")
+  if (window.inputString != null) {
+    newInput = window.prompt("Please input a custom matrix. (& to seperate row values, / to seperate columns)", window.inputString)
+  } else {
+    newInput = window.prompt("Please input a custom matrix. (& to seperate row values, / to seperate columns)", "0&0&0/0&0&0/0&0&0/0&0&0/0&0&0")
+  }
   setManualInput(newInput);
 }
