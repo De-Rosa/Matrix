@@ -70,6 +70,10 @@ function getMatrixType() {
             document.getElementById("transType").innerHTML = "rotation of " + radiansToDegrees(Math.acos(matrixList[2][2])).toPrecision(3) + " degrees anti-clockwise about the x axis "
             return;
           }
+          if (matrixList[2][2] == -1 & matrixList[1][2] == 0) {
+            document.getElementById("transType").innerHTML = "rotation of 180 degrees about the x axis "
+            return;
+          }
         }
       }
     }
@@ -82,6 +86,10 @@ function getMatrixType() {
             document.getElementById("transType").innerHTML = "rotation of " + radiansToDegrees(Math.acos(matrixList[2][2])).toPrecision(3) + " degrees anti-clockwise about the y axis "
             return;
           }
+          if (matrixList[2][2] == -1 & matrixList[2][0] == 0) {
+            document.getElementById("transType").innerHTML = "rotation of 180 degrees about the y axis "
+            return;
+          }
         }
       }
     }
@@ -92,6 +100,10 @@ function getMatrixType() {
         if (matrixList[2][0] == 0 & matrixList[2][1] == 0 & matrixList[0][2] == 0 & matrixList[1][2] == 0) {
           if (Math.acos(matrixList[0][0]).toPrecision(2) == Math.asin(matrixList[0][1]).toPrecision(2)) {
             document.getElementById("transType").innerHTML = "rotation of " + radiansToDegrees(Math.acos(matrixList[0][0])).toPrecision(3) + " degrees anti-clockwise about the z axis "
+            return;
+          }
+          if (matrixList[0][0] == -1 & matrixList[0][1] == 0) {
+            document.getElementById("transType").innerHTML = "rotation of 180 degrees about the z axis "
             return;
           }
         }
