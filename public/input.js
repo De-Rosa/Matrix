@@ -114,7 +114,7 @@ function setManualInput(inputString) {
   window.completedList = [];
   var tempList = [];
   for (var i=0; i<originalList.length; i++) {
-    tempList = originalList[i].split('&');
+    tempList = originalList[i].split(',');
     for (var j=0; j<tempList.length; j++) {
       tempList[j] = parseInt(tempList[j]) * 5;
     }
@@ -125,9 +125,9 @@ function setManualInput(inputString) {
 
 function createPopup() {
   if (window.inputString != null) {
-    newInput = window.prompt("Please input a custom matrix. (& to seperate row values, / to seperate columns)", window.inputString)
+    newInput = window.prompt("Please input a custom matrix. (, to seperate column values (x,y,z) and / to seperate rows)", window.inputString)
   } else {
-    newInput = window.prompt("Please input a custom matrix. (& to seperate row values, / to seperate columns)", "0&0&0/0&0&0/0&0&0/0&0&0/0&0&0")
+    newInput = window.prompt("Please input a custom matrix. (, to seperate column values (x,y,z) and / to seperate rows)", "0,0,0/0,0,0/0,0,0/0,0,0/0,0,0")
   }
   setManualInput(newInput);
 }
