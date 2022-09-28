@@ -4,6 +4,7 @@ window.transformationComplete = false;
 window.inputComplete = false;
 window.inputChange = false;
 window.transChange = false;
+window.manualInput = null;
 
 async function registerInput(x, y) {
   var value = parseFloat(document.getElementsByClassName("matrix-input")[(x)+(y*3)].value)
@@ -56,9 +57,9 @@ async function registerInput(x, y) {
 
 async function registerInput2(x, y) {
   var value = parseFloat(document.getElementsByClassName("matrix2-input")[(x)+(y*4)].value)
-  console.log(value)
   if (!isNaN(value)) {
     window.inputChange = true;
+    window.customInput = null;
     if (y == 0) {
       window.input[x].x = value * 5 ;
     } else if (y == 1) {
@@ -84,6 +85,7 @@ async function registerInput2(x, y) {
         }
       }
     }
+    console.log(count)
     if (count == 12) {
       window.inputComplete = true;
       console.log("completed input")
@@ -102,4 +104,24 @@ async function registerInput2(x, y) {
     window.inputComplete = false;
     count -= 1;
   }
+}
+
+function setManualInput(inputString) {  
+  window.inputChange = true;
+  var originalList = inputString.split('/');
+  var completedList = [];
+  var tempList = [];
+  for (var i=0; i<originalList.length; i++) {
+    tempList = originalList[i].split('&');
+    for (var j=0; j<tempList.length; j++) {
+      tempList[j] = parseInt(tempList[j]) * 5;
+    }
+    completedList.push(tempList)
+  }
+  window.manualInput = completedList;
+}
+
+function createPopup() {
+  input = window.prompt("Please input a custom matrix. (& to seperate row values, / to seperate columns)", "0&0&0/0&0&0/0&0&0/0&0&0/0&0&0")
+  setManualInput(input);
 }
