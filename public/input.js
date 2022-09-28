@@ -6,6 +6,7 @@ window.inputChange = false;
 window.transChange = false;
 window.manualInput = null;
 window.inputString = null;
+window.transDeterminant = null;
 
 function mode(arr){
   return arr.sort((a,b) =>
@@ -20,6 +21,32 @@ function radiansToDegrees(radians)
   return radians * (180/pi);
 }
 
+function oti() {
+  if (window.transformationComplete & window.inputComplete) {
+    window.inputChange = true;
+    window.input = window.transformationPoints;
+  }
+}
+function findDeterminant(matrixList) {
+  var a = matrixList[0][0]
+  var b = matrixList[1][0]
+  var c = matrixList[2][0]
+  var d = matrixList[0][1]
+  var e = matrixList[1][1]
+  var f = matrixList[2][1]
+  var g = matrixList[0][2]
+  var h = matrixList[1][2]
+  var i = matrixList[2][2]
+
+  return a*(e*i - f*h) - b*(d*i - f*g) + c*(d*h - e*g)
+}
+function inverse() {
+  var matrixList = convertTo3DList(window.transformation);
+  var determinant = findDeterminant(matrixList)
+  if (determinant == 0) return;
+  window.transDeterminant = determinant;
+}
+
 function getMatrixType() {
   var types = {"enlargement": true, "xy": true, "xz": true, "yz": true}
   var identityMatrix = [[1,0,0],[0,1,0],[0,0,1]]
@@ -28,7 +55,15 @@ function getMatrixType() {
   var yzReflect = [[-1,0,0],[0,1,0],[0,0,1]]
   var matrixList = convertTo3DList(window.transformation);
   var scaleFactor = mode([matrixList[0][0],matrixList[1][1],matrixList[2][2]])
-  console.log(scaleFactor)
+
+  if (findDeterminant(matrixList) == 0) {
+    document.getElementById("inverseID").style.cursor = 'not-allowed'
+    document.getElementById("inverseID").style.color = '#999999'
+    window.transDeterminant = null;
+  } else {
+    document.getElementById("inverseID").style.cursor = 'pointer'
+    document.getElementById("inverseID").style.color = '#000000' 
+  }
   for (var i = 0; i<3; i++) {
     for (var j = 0; j<3; j++) {
       if (!(matrixList[i][j] == (identityMatrix[i][j] * scaleFactor))) {
@@ -166,6 +201,9 @@ async function registerInput(x, y) {
     } else {
       document.getElementById("transType").innerHTML = "invalid transformation"
       window.transformationComplete = false;
+      document.getElementById("inverseID").style.cursor = "not-allowed"
+      document.getElementById("inverseID").style.color = '#999999'
+      window.transDeterminant = null; 
     }
     count = 0;
   } else {
@@ -179,6 +217,9 @@ async function registerInput(x, y) {
     document.getElementById("transType").innerHTML = "invalid transformation"
     window.transformationComplete = false;
     count -= 1;
+    document.getElementById("inverseID").style.cursor = "not-allowed"
+    document.getElementById("inverseID").style.color = '#999999' 
+    window.transDeterminant = null;
   }
 }
 

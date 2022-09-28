@@ -4,10 +4,11 @@ import { LineGeometry } from "https://cdn.jsdelivr.net/npm/three@0.132.0/example
 import { ConvexGeometry } from "https://cdn.jsdelivr.net/npm/three@0.132.0/examples/jsm/geometries/ConvexGeometry.js";
 import { Line2 } from "https://cdn.jsdelivr.net/npm/three@0.132.0/examples/jsm/lines/Line2.js";
 import { GUI } from 'https://cdn.jsdelivr.net/npm/three@0.132.0/examples/jsm/libs/dat.gui.module.js'
-
+ 
 import * as THREE from 'three';
 import {createTextDerivedMaterial, Text} from 'troika-three-text'
 import { Vector3 } from "three";
+import {inv} from 'mathjs';
 
 window.transformation = [new Vector3(NaN, NaN, NaN),new Vector3(NaN, NaN, NaN),new Vector3(NaN, NaN, NaN)]
 window.input = [new Vector3(NaN, NaN, NaN),new Vector3(NaN, NaN, NaN),new Vector3(NaN, NaN, NaN),new Vector3(NaN, NaN, NaN)]
@@ -15,6 +16,7 @@ window.customInput = []
 window.drawn = null;
 window.drawnTransformation = null;
 window.divisions = 1;
+window.transformationPoints = null;
 
 window.graph = new function(){
   this.divisions=1;
@@ -200,8 +202,12 @@ function createTransformedShape () {
       scene.remove(window.drawnTransformation);
       window.drawnTransformation = null;
       window.transChange = false;
+      document.getElementById("otiID").style.cursor = 'not-allowed'
+      document.getElementById("otiID").style.color = '#999999'
     }
     if (window.drawnTransformation == null) {
+      document.getElementById("otiID").style.cursor = 'pointer'
+      document.getElementById("otiID").style.color = '#000000'
       var inp;
       if (window.customInput != null) {
         inp = window.customInput
@@ -227,6 +233,7 @@ function createTransformedShape () {
           }
         }
       }
+      window.transformationPoints = points;
       const geometry = new ConvexGeometry(points)
       const material = new THREE.MeshBasicMaterial( { color: 0x0000aa} );
       const mesh = new THREE.Mesh(geometry, material);
@@ -237,6 +244,8 @@ function createTransformedShape () {
     if (window.drawnTransformation != null) {
       scene.remove(window.drawnTransformation);
       window.drawnTransformation = null;
+      document.getElementById("otiID").style.cursor = 'not-allowed'
+      document.getElementById("otiID").style.color = '#999999'
     }
   }
 }
@@ -252,12 +261,61 @@ function formatManualInput(inputList) {
   window.inputComplete = true;
 }
 
+function convertTo3DList(listOfVector3) {
+  var newList = [[null,null,null],[null,null,null],[null,null,null]]
+  for (var i = 0; i<3; i++) {
+    for (var j = 0; j<3; j++) {
+      switch (j) {
+        case 0:
+          newList[i][0] = listOfVector3[i].x
+        case 1:
+          newList[i][1] = listOfVector3[i].y
+        case 2:
+          newList[i][2] = listOfVector3[i].z
+      }
+    }
+  }
+  return newList
+}
+
+function convertToMatrix(listOfList) {
+  var newList = [new Vector3(null, null, null),new Vector3(null, null, null),new Vector3(null, null, null)]
+  for (var i = 0; i<3; i++) {
+    for (var j = 0; j<3; j++) {
+      switch (j) {
+        case 0:
+          newList[i].x = listOfList[i][0]
+        case 1:
+          newList[i].y = listOfList[i][1]
+        case 2:
+          newList[i].z = listOfList[i][2]
+      }
+    }
+  }
+  return newList
+}
+
 function animate() {
   scene.background = new THREE.Color(camera.position.X);
   requestAnimationFrame(animate);
   controls.update();
   if (window.manualInput != null) {
     formatManualInput(manualInput)
+  }
+  if (window.transDeterminant != null) {
+    window.transDeterminant = null;
+    window.transChange = true;
+    var transToList = convertTo3DList(window.transformation)
+    var inverseTrans = inv(transToList)
+    var inverseTransMatrix = convertToMatrix(inverseTrans)
+    window.transformation = inverseTransMatrix
+    console.log("done")
+    for (var i = 0; i<3; i++) {
+      for (var j = 0; j<3; j++) {
+        document.getElementsByClassName("matrix-input")[(j)+(i*3)].value = inverseTrans[i][j]
+      } 
+    }
+    document.getElementsByClassName("matrix-input")[0].dispatchEvent(new Event('input', {bubbles:true}))
   }
   try {
     createInputShape()

@@ -36,6 +36,7 @@
                 <div class="matrix-item" oninput="registerInput(1,2)"><input type="text" class="matrix-input"></div>
                 <div class="matrix-item" oninput="registerInput(2,2)"><input type="text" class="matrix-input"></div>
             </div>
+            <div id="inverseID" title="inverse transformation matrix" style="font-weight: bold;font-size:1.2vw;font-family:verdana;cursor: not-allowed;color:#999999;width: 1vw;" onclick="inverse()">-</div>
         </div>
         <div class="input2-matrix-container">
             <div style="writing-mode:vertical-rl;float:left;font-weight: bold;font-size:0.9vw;font-family:verdana;white-space: nowrap;">input matrix</div>
@@ -55,7 +56,9 @@
                 <div class="matrix2-item" oninput="registerInput2(2,2)"><input type="text" class="matrix2-input"></div>
                 <div class="matrix2-item" oninput="registerInput2(3,2)"><input type="text" class="matrix2-input"></div>
             </div>
-            <div style="font-weight: bold;font-size:1.3vw;font-family:verdana" onclick="createPopup()">*</div>
+            <div title="enter custom length matrix" style="font-weight: bold;font-size:1.3vw;font-family:verdana;cursor:pointer;width: 1vw;" onclick="createPopup()">*</div>
+            <div id="otiID" title="make output matrix input matrix" style="font-weight: bold;font-size:1.2vw;font-family:verdana;cursor: not-allowed;color:#999999;width: 1vw;" onclick="oti()">?</div>
+
         </div>
     </div> 
 </body>
