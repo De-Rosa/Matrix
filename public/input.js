@@ -25,6 +25,12 @@ function oti() {
   if (window.transformationComplete & window.inputComplete) {
     window.inputChange = true;
     window.input = window.transformationPoints;
+    var inputToList = convertTo3DList(window.input)
+    for (var i=0; i<4; i++) {
+      for (var j=0; j<3; j++) {
+        document.getElementsByClassName("matrix2-input")[(j*4)+(i)].value = (inputToList[i][j]/5)
+      }
+    }
   }
 }
 function findDeterminant(matrixList) {
@@ -149,9 +155,10 @@ function getMatrixType() {
 }
 
 function convertTo3DList(listOfVector3) {
-  var newList = [[null,null,null],[null,null,null],[null,null,null]]
-  for (var i = 0; i<3; i++) {
+  var newList = []
+  for (var i = 0; i<listOfVector3.length; i++) {
     for (var j = 0; j<3; j++) {
+      newList.push([null,null,null])
       switch (j) {
         case 0:
           newList[i][0] = listOfVector3[i].x
