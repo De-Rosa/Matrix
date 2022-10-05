@@ -99,12 +99,13 @@ scene.add(xAxisText)
 
 xAxisText.text = 'x axis'
 xAxisText.fontSize = 2
-xAxisText.position.x = 1
+xAxisText.position.x = 45
 xAxisText.color = 0x000000
 xAxisText.sync()
 
 const xDivisions = []
-for (let i=1; i<10; i++) {
+for (let i=-9; i<10; i++) {
+  if (i == 0) continue;
   var xDivisionText = new Text()
   scene.add(xDivisionText)
   xDivisionText.text = (i*window.divisions)
@@ -122,13 +123,14 @@ scene.add(yAxisText)
 
 yAxisText.text = 'y axis'
 yAxisText.fontSize = 2
-yAxisText.position.y = 1
+yAxisText.position.y = 45
 yAxisText.orientation = "+y+z"
 yAxisText.color = 0x000000
 yAxisText.sync()
 
 const yDivisions = []
-for (let i=1; i<10; i++) {
+for (let i=-9; i<10; i++) {
+  if (i == 0) continue;
   var yDivisionText = new Text()
   scene.add(yDivisionText)
   yDivisionText.text = (i*window.divisions)
@@ -147,13 +149,14 @@ scene.add(zAxisText)
 
 zAxisText.text = 'z axis'
 zAxisText.fontSize = 2
-zAxisText.position.z = 6
+zAxisText.position.z = 50
 zAxisText.orientation = "-z+y"
 zAxisText.color = 0x000000
 zAxisText.sync()
 
 const zDivisions = []
-for (let i=1; i<10; i++) {
+for (let i=-9; i<10; i++) {
+  if (i == 0) continue;
   var zDivisionText = new Text()
   scene.add(zDivisionText)
   zDivisionText.text = (i*window.divisions)
